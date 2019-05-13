@@ -26,11 +26,10 @@
 		
 	<body>
 			<br>
-			<form action="">
-			<select>
-			  <option value="Cronologico">Cronologico</option>
-			  <option value="Emision">Emision</option>
-			</select>
+			<form action="Main" method="get">
+				<input type="radio" name="instruccion" value="ordenCronologico"> Cronologico<br>
+  				<input type="radio" name="instruccion" value="ordenEmision"> Emision<br>
+				
 				<input type="submit" value="Ordenar">
 			</form>
 			

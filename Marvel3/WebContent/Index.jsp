@@ -23,10 +23,13 @@
 		<br>
 		<div>
 		<p>Peliculas: </p>  
+		<form action="Main" method= "get">
 		<ul style="list-style-type:circle;">
 	 		<li><a href="http://localhost:8080/Marvel3/PelisVistas.jsp">Ya vistas</a></li>
 	  		<li><a href="http://localhost:8080/Marvel3/PorVer.jsp">Por ver</a></li>
+	  	
 	  	</ul>
+	  	</form>
 	  	</div>
 	</body>
 </html>
