@@ -38,22 +38,71 @@ public class Main extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//String instruccion = request.getParameter("instruccion");
+		String instruccion = request.getParameter("instruccion");
+		
+		if (instruccion == null)
+			instruccion = "mostrarLista";
+		
+		switch (instruccion) {
+		case "mostrarLista": obtenerPeliculas(request,response);
+		break;
+		
+		case "ordenCronologico": obtenerPeliculasPorCronologia(request, response);
+			break;
+			
+		case "ordenEmision":obtenerPeliculasEmision (request,response);
+			break;
+			
+		default:  obtenerPeliculas(request,response);
+		}
+			
+		
+	}
+
+	private void obtenerPeliculasPorCronologia(HttpServletRequest request, HttpServletResponse response) {
+		List <Pelicula> listaPeliculas = new ArrayList<Pelicula>();
 		
 		
+		try {								
+	
+			listaPeliculas = misMetodosBaseDeDatos.ordenarPorCronologia();			
+			request.setAttribute("LISTAPELICULAS", listaPeliculas);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			dispatcher.forward(request, response);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+	}
+
+	private void obtenerPeliculasEmision(HttpServletRequest request, HttpServletResponse response) {
+		List <Pelicula> listaPeliculas = new ArrayList<Pelicula>();
 		
-		obtenerPeliculas(request,response);
+				
+				try {								
+			
+					listaPeliculas = misMetodosBaseDeDatos.ordenarPorEmision();			
+					request.setAttribute("LISTAPELICULAS", listaPeliculas);
+					
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+					dispatcher.forward(request, response);
+					
+				}catch (Exception e) {
+					e.printStackTrace();
+		}
 		
 	}
 
 	private void obtenerPeliculas(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		List <Pelicula> listaPeliculas = new ArrayList<Pelicula>();
+
 		
 		try {								
 	
-			listaPeliculas = misMetodosBaseDeDatos.obtenerPeliculas();
+			listaPeliculas = misMetodosBaseDeDatos.obtenerPeliculas();			
 			request.setAttribute("LISTAPELICULAS", listaPeliculas);
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");

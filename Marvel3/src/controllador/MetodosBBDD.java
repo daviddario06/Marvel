@@ -2,9 +2,8 @@ package controllador;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.Collections;
 import javax.sql.DataSource;
 
 public class MetodosBBDD {
@@ -54,5 +53,46 @@ public class MetodosBBDD {
 		
 		
 		return peliculas;
+	}
+
+	public List<Pelicula> ordenarPorEmision(){
+	
+		List <Pelicula> peliculasEmision = obtenerPeliculas();
+		
+		Collections.sort(peliculasEmision, new Comparator<Pelicula>() {
+			public int compare (Pelicula peli1, Pelicula peli2) {
+				
+				if (peli1.getEmision() > peli2.getEmision())
+					return 1;
+				else if (peli1.getEmision() < peli2.getEmision())
+					return -1;
+				else
+					return 0;
+				
+			}
+		});
+		
+		
+		return  peliculasEmision;
+	}
+
+	public List<Pelicula> ordenarPorCronologia(){
+		
+		List <Pelicula> peliculasCronologicamente = obtenerPeliculas();
+		
+		Collections.sort(peliculasCronologicamente, new Comparator<Pelicula>() {
+			public int compare (Pelicula peli1, Pelicula peli2) {
+				
+				if (peli1.getCronologico() > peli2.getCronologico())
+					return 1;
+				else if (peli1.getCronologico() < peli2.getCronologico())
+					return -1;
+				else
+					return 0;
+				
+			}
+		});
+		
+		return  peliculasCronologicamente;
 	}
 }
