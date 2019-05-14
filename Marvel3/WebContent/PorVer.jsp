@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+<%@ page import = "java.util.*, controllador.*" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -23,32 +25,22 @@
 				}
 		</style>
 	</head>
-		
+
+	
+
+
 	<body>
 			<br>
 			<form action="Main" method="get">
 				<input type="radio" name="instruccion" value="ordenCronologico"> Cronologico<br>
   				<input type="radio" name="instruccion" value="ordenEmision"> Emision<br>
+  				<input type="radio" name="instruccion" value="vistas"> Vistas<br>
+  				<input type="radio" name="instruccion" value="porVer"> PorVer<br>
 				
 				<input type="submit" value="Ordenar">
 			</form>
 			
 			<br>
-			<table style="width:100%">
-			  <tr>
-			    <th>Nombre</th>
-			    <th>Emision</th> 
-			    <th>Cronologico</th>
-			    <th>Estado</th>
-			  </tr>
-			  
-			  <tr>
-				<td>IronMan4(?)</td>
-			    <td>Quien sabe</td>
-			    <td>??</td>
-			    <td>Y no vista</td>
-			    	
-			 </tr>
-			</table>
+	
 	</body>
 </html>

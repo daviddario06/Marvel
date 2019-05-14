@@ -1,7 +1,7 @@
 package controllador;
 
 import java.io.*;
-import java.sql.*;
+
 import java.util.*;
 
 import javax.annotation.Resource;
@@ -44,6 +44,7 @@ public class Main extends HttpServlet {
 			instruccion = "mostrarLista";
 		
 		switch (instruccion) {
+
 		case "mostrarLista": obtenerPeliculas(request,response);
 		break;
 		
@@ -53,10 +54,55 @@ public class Main extends HttpServlet {
 		case "ordenEmision":obtenerPeliculasEmision (request,response);
 			break;
 			
+		case "porVer": obtenerPeliculasPorVer (request,response);
+			break;
+			
+		case "vistas": obtenerPeliculasVistas (request,response);	
 		default:  obtenerPeliculas(request,response);
 		}
 			
 		
+	}
+
+	private void obtenerPeliculasVistas(HttpServletRequest request, HttpServletResponse response) {
+		
+	List <Pelicula> listaPeliculas = new ArrayList<Pelicula>();
+	List <Pelicula> listaTemp = new ArrayList<Pelicula>();
+		
+		
+		try {								
+	
+			listaPeliculas = misMetodosBaseDeDatos.obtenerPeliculas();
+			listaTemp = misMetodosBaseDeDatos.obtenerVistas(listaPeliculas);		
+			request.setAttribute("LISTAPELICULAS", listaTemp);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			dispatcher.forward(request, response);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		
+		}
+	}
+
+	private void obtenerPeliculasPorVer(HttpServletRequest request, HttpServletResponse response) {
+	
+		List <Pelicula> listaPeliculas = new ArrayList<Pelicula>();
+		List <Pelicula> listaTemp = new ArrayList<Pelicula>();
+		
+		try {								
+	
+			listaPeliculas = misMetodosBaseDeDatos.obtenerPeliculas();
+			listaTemp = misMetodosBaseDeDatos.obtenerPeliculasPorMirar(listaPeliculas);		
+			request.setAttribute("LISTAPELICULAS", listaTemp);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			dispatcher.forward(request, response);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		
+		}
 	}
 
 	private void obtenerPeliculasPorCronologia(HttpServletRequest request, HttpServletResponse response) {
@@ -65,7 +111,8 @@ public class Main extends HttpServlet {
 		
 		try {								
 	
-			listaPeliculas = misMetodosBaseDeDatos.ordenarPorCronologia();			
+			listaPeliculas = misMetodosBaseDeDatos.obtenerPeliculas();
+			listaPeliculas = misMetodosBaseDeDatos.ordenarPorCronologia(listaPeliculas);		
 			request.setAttribute("LISTAPELICULAS", listaPeliculas);
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
@@ -82,8 +129,9 @@ public class Main extends HttpServlet {
 		
 				
 				try {								
-			
-					listaPeliculas = misMetodosBaseDeDatos.ordenarPorEmision();			
+					
+					listaPeliculas = misMetodosBaseDeDatos.obtenerPeliculas();
+					listaPeliculas = misMetodosBaseDeDatos.ordenarPorEmision(listaPeliculas);			
 					request.setAttribute("LISTAPELICULAS", listaPeliculas);
 					
 					RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");

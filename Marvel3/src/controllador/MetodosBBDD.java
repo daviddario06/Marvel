@@ -3,7 +3,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
-import java.util.Collections;
+
 import javax.sql.DataSource;
 
 public class MetodosBBDD {
@@ -55,9 +55,7 @@ public class MetodosBBDD {
 		return peliculas;
 	}
 
-	public List<Pelicula> ordenarPorEmision(){
-	
-		List <Pelicula> peliculasEmision = obtenerPeliculas();
+	public List<Pelicula> ordenarPorEmision(List <Pelicula> peliculasEmision){
 		
 		Collections.sort(peliculasEmision, new Comparator<Pelicula>() {
 			public int compare (Pelicula peli1, Pelicula peli2) {
@@ -76,9 +74,8 @@ public class MetodosBBDD {
 		return  peliculasEmision;
 	}
 
-	public List<Pelicula> ordenarPorCronologia(){
+	public List<Pelicula> ordenarPorCronologia(List <Pelicula> peliculasCronologicamente){
 		
-		List <Pelicula> peliculasCronologicamente = obtenerPeliculas();
 		
 		Collections.sort(peliculasCronologicamente, new Comparator<Pelicula>() {
 			public int compare (Pelicula peli1, Pelicula peli2) {
@@ -94,5 +91,34 @@ public class MetodosBBDD {
 		});
 		
 		return  peliculasCronologicamente;
+	}
+
+	public List<Pelicula> obtenerVistas(List<Pelicula> listaPeliculas) {
+		
+		List <Pelicula> pelisVistas = new ArrayList<Pelicula>();
+		
+		for (Pelicula e : listaPeliculas) {
+			
+			if (e.getEstado().equals("VISTO")) {
+				pelisVistas.add(e);
+			}
+		}
+		
+		return pelisVistas;
+	}
+
+	public List<Pelicula> obtenerPeliculasPorMirar(List<Pelicula> listaPeliculas) {
+		
+		List <Pelicula> pelisPorMirar = new ArrayList<Pelicula>();
+		
+		for (Pelicula e : listaPeliculas) {
+			
+			if (e.getEstado().equals("DISPONIBLE")) {
+				pelisPorMirar.add(e);
+			}
+		}
+		
+		return pelisPorMirar;
+
 	}
 }

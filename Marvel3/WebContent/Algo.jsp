@@ -35,6 +35,8 @@ tr:nth-child(even) {
 <body>
 <br>
 
+<jsp:include page="Index.jsp"></jsp:include>
+
 <table style="width:100%">
   <tr>
  	<th>Id</th>
@@ -56,7 +58,7 @@ tr:nth-child(even) {
   
 </table>
 
-
+<jsp:include page="PorVer.jsp"></jsp:include>
 
 </body>
 </html>
