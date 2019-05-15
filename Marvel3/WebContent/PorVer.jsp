@@ -33,12 +33,20 @@
 			<br>
 			<form action="Main" method="get">
 				
-  				<input type="radio" name="instruccion" value="ordenEmision"> Todas<br>
-  				<input type="radio" name="instruccion" value="vistas"> Vistas<br>
+  				<p>
+  				<input type="radio" name="instruccion_1" value="todas"> Todas<br>
+  				<input type="radio" name="instruccion_1" value="visto"> Vistas<br>
   				<input type="radio" name="instruccion" value="porVer"> PorVer<br>
+				</p>
+			
+				<p>
+  				<input type="radio" name="instruccion_2" value="emision"> En Emision<br>
+  				<input type="radio" name="instruccion_2" value="cronologica"> Cronologico<br>
+  				</p>
 				
 				<input type="submit" value="Ordenar">
 			</form>
+			
 			
 			<br>
 	
