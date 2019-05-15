@@ -26,6 +26,9 @@ public class Prueba {
 				System.out.println(rs.getString("NOMBRE"));
 			}
 			
+			String hola = null;
+			boolean p = hola.equals("hola") && (null != hola);
+			System.out.println(p);
 			
 		}catch (Exception e) {
 			e.printStackTrace();

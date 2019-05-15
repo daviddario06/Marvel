@@ -32,8 +32,8 @@
 	<body>
 			<br>
 			<form action="Main" method="get">
-				<input type="radio" name="instruccion" value="ordenCronologico"> Cronologico<br>
-  				<input type="radio" name="instruccion" value="ordenEmision"> Emision<br>
+				
+  				<input type="radio" name="instruccion" value="ordenEmision"> Todas<br>
   				<input type="radio" name="instruccion" value="vistas"> Vistas<br>
   				<input type="radio" name="instruccion" value="porVer"> PorVer<br>
 				
