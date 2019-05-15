@@ -37,33 +37,6 @@ public class Main extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		//String instruccion = request.getParameter("instruccion");
-		
-		/*if (instruccion == null)
-			instruccion = "mostrarLista";
-		
-		switch (instruccion) {
-
-		case "mostrarLista": obtenerPeliculas(request,response);
-		break;
-		
-		case "ordenCronologico": obtenerPeliculasPorCronologia(request, response);
-			break;
-			
-		case "ordenEmision":obtenerPeliculasEmision (request,response);
-			break;
-			
-		case "porVer": obtenerPeliculasPorVer (request,response);
-			break;
-			
-		case "vistas": obtenerPeliculasVistas (request,response);	
-		
-		case "agregar": agregarPelicula(request, response);
-		
-		default:  obtenerPeliculas(request,response);
-		*/
-		
 
 			boolean	esPorVer = false;
 			boolean esVisto = false;	
@@ -71,15 +44,20 @@ public class Main extends HttpServlet {
 			boolean esCronologica = false;
 			boolean esEmision = false;
 			boolean esSelect = false;
+			boolean esCargar = false;
+			boolean esModificar = false;
 			
 			String instruccion_1 = request.getParameter("instruccion_1");
 			String instruccion_2 = request.getParameter("instruccion_2");
+			
 			
 			if (instruccion_1 != null ){
 				
 				esPorVer = instruccion_1.equals("porVer");
 				esVisto	= instruccion_1.equals("visto");
 				esTodas	= instruccion_1.equals("todas");
+				esCargar = instruccion_1.equals("Modificar");
+				esModificar = instruccion_1.contentEquals("Guardar");
 			}
 			
 			if (instruccion_2 != null ){
@@ -87,8 +65,8 @@ public class Main extends HttpServlet {
 				esCronologica = instruccion_2.equals("cronologica");
 				esEmision = instruccion_2.equals("emision");
 				esSelect = instruccion_2.equals("select");
-			}
-			
+			}			
+						
 			
 			if(esVisto && esSelect){
 				obtenerPeliculasVistas (request,response);
@@ -114,15 +92,43 @@ public class Main extends HttpServlet {
 			else if (esTodas && esCronologica){
 				obtenerPeliculasPorCronologia(request, response);
 			}
-			else
-				obtenerPeliculas(request,response);
 			
-
-		
-		
+			else if (esCargar) {
+				cargarPelicula(request, response);
+			}
+			
+			else if (esModificar) {
+				modificarPelicula(request, response);
+			}
+			else
+				obtenerPeliculas(request,response);			
 		}
 			
 		
+	private void modificarPelicula(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		int id = Integer.parseInt(request.getParameter("idPeli"));
+		String estado = request.getParameter("estado");
+		
+		misMetodosBaseDeDatos.actualizarEstado(id,estado);
+		
+		obtenerPeliculas(request, response);
+	}
+
+	private void cargarPelicula(HttpServletRequest request, HttpServletResponse response) {
+		Pelicula pelicula;
+		int id = Integer.parseInt(request.getParameter("idPeli"));
+		pelicula = misMetodosBaseDeDatos.obtenerPelicula(id);
+		
+		try {
+			request.setAttribute("PELICULA", pelicula);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/Modificar.jsp");
+			dispatcher.forward(request, response);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void obtenerPeliculasPorVerCronologicamente(HttpServletRequest request, HttpServletResponse response) {
 		
 		List <Pelicula> listaPeliculas = new ArrayList<Pelicula>();		
@@ -135,7 +141,7 @@ public class Main extends HttpServlet {
 			
 			request.setAttribute("LISTAPELICULAS", listaPeliculas);
 		
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/listaPeliculas.jsp");
 		
 			dispatcher.forward(request, response);
 		} catch (Exception e) {
@@ -157,7 +163,7 @@ public class Main extends HttpServlet {
 			
 			request.setAttribute("LISTAPELICULAS", listaPeliculas);
 		
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/listaPeliculas.jsp");
 		
 			dispatcher.forward(request, response);
 		} catch (Exception e) {
@@ -178,7 +184,7 @@ public class Main extends HttpServlet {
 			
 			request.setAttribute("LISTAPELICULAS", listaPeliculas);
 		
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/listaPeliculas.jsp");
 		
 			dispatcher.forward(request, response);
 		} catch (Exception e) {
@@ -198,7 +204,7 @@ public class Main extends HttpServlet {
 			
 			request.setAttribute("LISTAPELICULAS", listaPeliculas);
 		
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/listaPeliculas.jsp");
 		
 			dispatcher.forward(request, response);
 		} catch (Exception e) {
@@ -206,21 +212,6 @@ public class Main extends HttpServlet {
 			e.printStackTrace();
 		} 
 		
-	}
-
-
-	
-
-	private void agregarPelicula(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-		String nombrePeli = request.getParameter("nombre");
-		int emision = Integer.parseInt(request.getParameter("emision"));
-		int cronologico = Integer.parseInt(request.getParameter("cronologico"));
-		String estado = request.getParameter("estado");
-		
-		misMetodosBaseDeDatos.agregarPelicula(nombrePeli,emision,cronologico,estado);
-		
-		obtenerPeliculas(request, response);
 	}
 
 	private void obtenerPeliculasVistas(HttpServletRequest request, HttpServletResponse response) {
@@ -233,7 +224,7 @@ public class Main extends HttpServlet {
 			listaPeliculas = misMetodosBaseDeDatos.obtenerVistas(listaPeliculas);		
 			request.setAttribute("LISTAPELICULAS", listaPeliculas);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/listaPeliculas.jsp");
 			dispatcher.forward(request, response);
 			
 		}catch (Exception e) {
@@ -253,7 +244,7 @@ public class Main extends HttpServlet {
 			listaTemp = misMetodosBaseDeDatos.obtenerPeliculasPorMirar(listaPeliculas);		
 			request.setAttribute("LISTAPELICULAS", listaTemp);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/listaPeliculas.jsp");
 			dispatcher.forward(request, response);
 			
 		}catch (Exception e) {
@@ -272,7 +263,7 @@ public class Main extends HttpServlet {
 			listaPeliculas = misMetodosBaseDeDatos.ordenarPorCronologia(listaPeliculas);		
 			request.setAttribute("LISTAPELICULAS", listaPeliculas);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/listaPeliculas.jsp");
 			dispatcher.forward(request, response);
 			
 		}catch (Exception e) {
@@ -291,7 +282,7 @@ public class Main extends HttpServlet {
 					listaPeliculas = misMetodosBaseDeDatos.ordenarPorEmision(listaPeliculas);			
 					request.setAttribute("LISTAPELICULAS", listaPeliculas);
 					
-					RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/listaPeliculas.jsp");
 					dispatcher.forward(request, response);
 					
 				}catch (Exception e) {
@@ -310,14 +301,12 @@ public class Main extends HttpServlet {
 			listaPeliculas = misMetodosBaseDeDatos.obtenerPeliculas();			
 			request.setAttribute("LISTAPELICULAS", listaPeliculas);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Algo.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/listaPeliculas.jsp");
 			dispatcher.forward(request, response);
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-
 	
 }

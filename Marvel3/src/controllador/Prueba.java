@@ -1,9 +1,10 @@
 package controllador;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+;
 
 public class Prueba {
 
@@ -11,24 +12,24 @@ public class Prueba {
 		// TODO Auto-generated method stub
 
 		Connection conexion = null;
-		Statement miStatement = null;
+		PreparedStatement miStatement = null;
 		ResultSet rs = null;
 		try {
 			
 			conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Marvel", "postgres", "postgres");
 		
-			miStatement = conexion.createStatement();
+			String sql = "SELECT * FROM PELICULAS WHERE \"ID\" = ?";
 			
-			rs = miStatement.executeQuery("SELECT * FROM PELICULAS");
+			miStatement = conexion.prepareStatement(sql);
+
+			miStatement.setInt(1, 1);
+			rs = miStatement.executeQuery();
 			
 			while (rs.next()) {
 				
 				System.out.println(rs.getString("NOMBRE"));
 			}
-			
-			String hola = null;
-			boolean p = hola.equals("hola") && (null != hola);
-			System.out.println(p);
+
 			
 		}catch (Exception e) {
 			e.printStackTrace();

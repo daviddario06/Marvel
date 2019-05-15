@@ -1,9 +1,5 @@
 package controllador;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 
 import javax.sql.DataSource;
@@ -27,7 +23,7 @@ public class MetodosBBDD {
 			
 			conexion = datosConexion.getConnection();
 			miStatement = conexion.createStatement();
-			String consultaSql = "SELECT *FROM PELICULAS";
+			String consultaSql = "SELECT *FROM PELICULAS ORDER BY \"ID\"";
 			rs = miStatement.executeQuery(consultaSql);
 			
 			
@@ -115,7 +111,7 @@ public class MetodosBBDD {
 		
 		for (Pelicula e : listaPeliculas) {
 			
-			if (e.getEstado().equals("DISPONIBLE")) {
+			if (e.getEstado().equals("POR VER")) {
 				pelisPorMirar.add(e);
 			}
 		}
@@ -124,32 +120,59 @@ public class MetodosBBDD {
 
 	}
 
-	
-	public void agregarPelicula(String nombrePeli, int emision, int cronologico, String estado) {
+
+	public Pelicula obtenerPelicula(int id) {
+
+		Pelicula pelicula = null;
+		Connection conexion = null;
+		PreparedStatement miStatement = null;
+		ResultSet rs = null;
+		
+		try {
+			conexion = datosConexion.getConnection();
+			String sql = "SELECT * FROM PELICULAS WHERE \"ID\" = ?";
+			
+			miStatement = conexion.prepareStatement(sql);
+
+			miStatement.setInt(1, id);
+			rs = miStatement.executeQuery();
+			
+			while (rs.next()) {
+				pelicula = new Pelicula(rs.getInt(1), rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5));
+			}
+			
+			rs.close();
+			miStatement.close();
+			conexion.close();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return pelicula;
+	}
+
+	public void actualizarEstado(int id, String estado) {
 		
 		Connection conexion = null;
 		PreparedStatement miStatement = null;
 		
 		try {
 			conexion = datosConexion.getConnection();
+			String sql = "UPDATE PELICULAS SET \"ESTADO\" = ? WHERE \"ID\" = ?";
 			
-			
-			String consultaSql = "INSERT INTO PELICULAS (NOMBRE, ANIO_EMISION,ANIO_CRONOLOGICO,ESTADO) VALUES (?,?,?,?)";
-			
-			miStatement = conexion.prepareStatement(consultaSql);
-			
-			miStatement.setString(1, nombrePeli); 
-			miStatement.setInt(2, emision);
-			miStatement.setInt(3, cronologico);
-			miStatement.setString(4, estado);
-			
+			miStatement = conexion.prepareStatement(sql);
+
+			miStatement.setString(1, estado);
+			miStatement.setInt(2, id);
 			miStatement.execute();
-		} catch (SQLException e) {
 			
+			
+			miStatement.close();
+			conexion.close();
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
-	
-		
-		
 	}
 }
