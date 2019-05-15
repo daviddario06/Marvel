@@ -58,10 +58,25 @@ public class Main extends HttpServlet {
 			break;
 			
 		case "vistas": obtenerPeliculasVistas (request,response);	
+		
+		case "Agregar": agregarPelicula(request, response);
+		
 		default:  obtenerPeliculas(request,response);
 		}
 			
 		
+	}
+
+	private void agregarPelicula(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		String nombrePeli = request.getParameter("nombre");
+		int emision = Integer.parseInt(request.getParameter("emision"));
+		int cronologico = Integer.parseInt(request.getParameter("cronologico"));
+		String estado = request.getParameter("estado");
+		
+		misMetodosBaseDeDatos.agregarPelicula(nombrePeli,emision,cronologico,estado);
+		
+		obtenerPeliculas(request, response);
 	}
 
 	private void obtenerPeliculasVistas(HttpServletRequest request, HttpServletResponse response) {

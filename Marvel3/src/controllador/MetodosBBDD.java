@@ -1,6 +1,8 @@
 package controllador;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
@@ -120,5 +122,34 @@ public class MetodosBBDD {
 		
 		return pelisPorMirar;
 
+	}
+
+	
+	public void agregarPelicula(String nombrePeli, int emision, int cronologico, String estado) {
+		
+		Connection conexion = null;
+		PreparedStatement miStatement = null;
+		
+		try {
+			conexion = datosConexion.getConnection();
+			
+			
+			String consultaSql = "INSERT INTO PELICULAS (NOMBRE, ANIO_EMISION,ANIO_CRONOLOGICO,ESTADO) VALUES (?,?,?,?)";
+			
+			miStatement = conexion.prepareStatement(consultaSql);
+			
+			miStatement.setString(1, nombrePeli); 
+			miStatement.setInt(2, emision);
+			miStatement.setInt(3, cronologico);
+			miStatement.setString(4, estado);
+			
+			miStatement.execute();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+	
+		
+		
 	}
 }
