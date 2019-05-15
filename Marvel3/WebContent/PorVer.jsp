@@ -32,16 +32,18 @@
 	<body>
 			<br>
 			<form action="Main" method="get">
-				
+				<p>Filtrar por: </p>
   				<p>
   				<input type="radio" name="instruccion_1" value="todas"> Todas<br>
   				<input type="radio" name="instruccion_1" value="visto"> Vistas<br>
-  				<input type="radio" name="instruccion" value="porVer"> PorVer<br>
+  				<input type="radio" name="instruccion_1" value="porVer"> Por ver<br>
 				</p>
-			
+				
+				<p>Ordenar por: </p>
 				<p>
   				<input type="radio" name="instruccion_2" value="emision"> En Emision<br>
   				<input type="radio" name="instruccion_2" value="cronologica"> Cronologico<br>
+  				<input type="radio" name="instruccion_2" value="select"> Sin Orden<br>
   				</p>
 				
 				<input type="submit" value="Ordenar">

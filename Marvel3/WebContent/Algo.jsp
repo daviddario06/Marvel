@@ -44,6 +44,7 @@ tr:nth-child(even) {
     <th>Emision</th> 
     <th>Cronologico</th>
     <th>Estado</th>
+    <th> </th>
   </tr>
   
   <% for (Pelicula e: peliculasMarvel){%>
@@ -53,6 +54,11 @@ tr:nth-child(even) {
 	    <td><%= e.getEmision() %></td>
 	    <td><%= e.getCronologico() %></td>
 	    <td><%= e.getEstado()%></td>	
+	    <td>
+	    <form action="http://localhost:8080/Marvel3/Agregar.jsp" method="get">
+	    <input type="submit" value="Modificar">
+	    </form>
+	    </td>
 	</tr>
   <%} %>
   
